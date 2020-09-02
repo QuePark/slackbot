@@ -32,6 +32,7 @@ const {
 	story,
 	branchList,
 	booksRecommend,
+	search,
 } = command;
 
 // get a messages to send by command
@@ -110,6 +111,35 @@ scheduleJob('00 20 * * 1-5', () => {
 	send(['시프티 퇴근했어?'], teamChannel);
 });
 
+// send result url in search engine
+const sendSearchResult = (textArr, channel) => {
+	const tmpArr = textArr.filter((x) => x !== '검색!');
+	let searchEngine;
+	if (tmpArr[0] === '네이버') {
+		searchEngine = tmpArr.shift();
+		const naver = [
+			`https://search.naver.com/search.naver?ie=UTF-8&query=${tmpArr.join(
+				'+'
+			)}&sm=chr_hty`,
+		];
+		send(naver, channel);
+	} else if (tmpArr[0] === '다음') {
+		searchEngine = tmpArr.shift();
+		const daum = [
+			`https://search.daum.net/search?w=tot&&q=${tmpArr.join('+')}`,
+		];
+		send(daum, channel);
+	} else if (tmpArr[0] === '구글') {
+		searchEngine = tmpArr.shift();
+		const google = [`https://www.google.com/search?q=${tmpArr.join('+')}`];
+		send(google, channel);
+	} else {
+		searchEngine = '구글';
+		const google = [`https://www.google.com/search?q=${tmpArr.join('+')}`];
+		send(google, channel);
+	}
+};
+
 // Real Time Messages
 const rtm = new RTMClient(token);
 rtm.start();
@@ -118,6 +148,9 @@ rtm.on('message', (message) => {
 	// console.log('---------------------------message: ', message);
 	if (!message.hidden) {
 		let text = message.text;
+		if (text.split(' ').some((x) => search.includes(x))) {
+			sendSearchResult(text.split(' '), message.channel);
+		}
 		if (text.split(' ').includes('<@U019ZCZGQ1F>')) {
 			send(['바쁘니까 호출하지마'], message.channel);
 		}
