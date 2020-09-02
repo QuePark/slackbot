@@ -90,7 +90,7 @@ scheduleJob('02 50 08 * * 1-5', () => {
 	send(['시프티 출근했어?'], teamChannel);
 });
 scheduleJob('00 09 * * 1-5', () => {
-	send(['시프티 출근 했냐구'], teamChannel);
+	send(['시프티 출근했냐구'], teamChannel);
 });
 scheduleJob('55 11 * * 1-5', () => {
 	send(lunchText, generalChannel);
@@ -98,8 +98,8 @@ scheduleJob('55 11 * * 1-5', () => {
 scheduleJob('00 12 * * 1-5', () => {
 	send(lunchText, teamChannel);
 });
-scheduleJob('55 17 * * 1-5', () => {
-	send(lunchText, teamChannel);
+scheduleJob('05 18 * * 1-5', () => {
+	send(dinnerText, teamChannel);
 });
 scheduleJob('10 18 * * 1-5', () => {
 	send(dinnerText, generalChannel);
@@ -108,7 +108,7 @@ scheduleJob('00 18 * * 1-5', () => {
 	send(['시프티 퇴근했어?'], teamChannel);
 });
 scheduleJob('00 20 * * 1-5', () => {
-	send(['시프티 퇴근했어?'], teamChannel);
+	send(['시프티 퇴근했냐구'], teamChannel);
 });
 
 // send result url in search engine
