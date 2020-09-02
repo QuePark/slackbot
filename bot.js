@@ -129,6 +129,12 @@ const sendSearchResult = (textArr, channel) => {
 			`https://search.daum.net/search?w=tot&&q=${tmpArr.join('+')}`,
 		];
 		send(daum, channel);
+	} else if (tmpArr[0] === '유튜브' || tmpArr[0] === '유튭') {
+		searchEngine = tmpArr.shift();
+		const youtube = [
+			`https://www.youtube.com/results?search_query=${tmpArr.join('+')}`,
+		];
+		send(youtube, channel);
 	} else if (tmpArr[0] === '구글') {
 		searchEngine = tmpArr.shift();
 		const google = [`https://www.google.com/search?q=${tmpArr.join('+')}`];
