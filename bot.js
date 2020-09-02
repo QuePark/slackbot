@@ -153,7 +153,7 @@ const rtm = new RTMClient(token);
 rtm.start();
 
 rtm.on('message', (message) => {
-	console.log('---------------------------message: ', message);
+	// console.log('---------------------------message: ', message);
 	if (!message.hidden) {
 		let text = message.text;
 		if (text.split(' ').some((x) => search.includes(x))) {
