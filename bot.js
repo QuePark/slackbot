@@ -4,9 +4,13 @@ import RtmPkg from '@slack/rtm-api';
 
 // personal function, command, contents, information
 import { getRoles } from '../yejiseo/lotsRole.js';
-import { command } from '../yejiseo/command.js';
-import { contents } from '../yejiseo/contents.js';
-import { information } from '../yejiseo/information.js';
+import commandPkg from '../yejiseo/command.js';
+import contentsPkg from '../yejiseo/contents.js';
+import informationPkg from '../yejiseo/information.js';
+
+const command = commandPkg;
+const contents = contentsPkg;
+const information = informationPkg;
 
 // get myToken, slackBot imgage, and channels to send a messages
 const {
