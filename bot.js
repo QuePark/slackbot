@@ -3,15 +3,10 @@ import schdulePkg from 'node-schedule';
 import RtmPkg from '@slack/rtm-api';
 
 // personal function, command, contents, information
-import getRolesPkg from '../yejiseo/lotsRole.js';
-import commandPkg from '../yejiseo/command.js';
-import contentsPkg from '../yejiseo/contents.js';
-import informationPkg from '../yejiseo/information.js';
-
-const { getRoles } = getRolesPkg;
-const { command } = commandPkg;
-const { contents } = contentsPkg;
-const { information } = informationPkg;
+import { getRoles } from './yejiseo/lotsRole.js';
+import { command } from './yejiseo/command.js';
+import { contents } from './yejiseo/contents.js';
+import { information } from './yejiseo/information.js';
 
 // get myToken, slackBot imgage, and channels to send a messages
 const {
