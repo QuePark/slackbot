@@ -15,6 +15,7 @@ const {
 	selfChannel,
 	generalChannel,
 	teamChannel,
+	teamMember,
 } = information;
 
 // get a commands filtering what to do
@@ -33,6 +34,7 @@ const {
 	branchList,
 	booksRecommend,
 	search,
+	call,
 } = command;
 
 // get a messages to send by command
@@ -151,7 +153,7 @@ const rtm = new RTMClient(token);
 rtm.start();
 
 rtm.on('message', (message) => {
-	// console.log('---------------------------message: ', message);
+	console.log('---------------------------message: ', message);
 	if (!message.hidden) {
 		let text = message.text;
 		if (text.split(' ').some((x) => search.includes(x))) {
@@ -207,6 +209,8 @@ rtm.on('message', (message) => {
 					send(blogLinks, tmpChannel);
 				} else if (text.some((x) => story.includes(x))) {
 					send(storyList, tmpChannel);
+				} else if (text.some((x) => call.includes(x))) {
+					send([teamMember.join(' ')], tmpChannel);
 				} else if (text.some((x) => x === '현재시각')) {
 					time = new Date();
 					send([String(time)], tmpChannel);
