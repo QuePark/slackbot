@@ -16,6 +16,7 @@ const {
 	generalChannel,
 	teamChannel,
 	teamMember,
+	notionUrl,
 } = information;
 
 // get a commands filtering what to do
@@ -158,6 +159,9 @@ rtm.on('message', (message) => {
 		let text = message.text;
 		if (text.split(' ').some((x) => search.includes(x))) {
 			sendSearchResult(text.split(' '), message.channel);
+		}
+		if (text.split(' ').some((x) => x === '노션!')) {
+			send([notionUrl], message.channel);
 		}
 		if (text.split(' ').includes('<@U019ZCZGQ1F>')) {
 			send(['바쁘니까 호출하지마'], message.channel);
