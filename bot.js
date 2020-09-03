@@ -157,14 +157,20 @@ rtm.on('message', (message) => {
 	// console.log('---------------------------message: ', message);
 	if (!message.hidden) {
 		let text = message.text;
-		if (text.split(' ').some((x) => search.includes(x))) {
-			sendSearchResult(text.split(' '), message.channel);
-		}
-		if (text.split(' ').some((x) => x === '노션!')) {
-			send([notionUrl], message.channel);
-		}
-		if (text.split(' ').includes('<@U019ZCZGQ1F>')) {
-			send(['바쁘니까 호출하지마'], message.channel);
+		if (
+			message.channel === generalChannel ||
+			message.channel === teamChannel ||
+			message.channel === selfChannel
+		) {
+			if (text.split(' ').some((x) => search.includes(x))) {
+				sendSearchResult(text.split(' '), message.channel);
+			}
+			if (text.split(' ').some((x) => x === '노션!')) {
+				send([notionUrl], message.channel);
+			}
+			if (text.split(' ').includes('<@U019ZCZGQ1F>')) {
+				send(['바쁘니까 호출하지마'], message.channel);
+			}
 		}
 		if (
 			message.channel === generalChannel &&
