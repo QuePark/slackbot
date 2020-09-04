@@ -50,6 +50,7 @@ const {
 	blogLinks,
 	bookList,
 	storyList,
+	branch,
 } = contents;
 
 // get a function and class
