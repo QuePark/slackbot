@@ -3,7 +3,7 @@ import schdulePkg from 'node-schedule';
 import RtmPkg from '@slack/rtm-api';
 
 // personal function, command, contents, information
-import { getRoles } from './yejiseo/lotsRole.js';
+import { names, getRoles } from './yejiseo/lotsRole.js';
 import { command } from './yejiseo/command.js';
 import { contents } from './yejiseo/contents.js';
 import { information } from './yejiseo/information.js';
@@ -265,7 +265,18 @@ rtm.on('message', (message) => {
 				} else if (text.some((x) => mogacko.includes(x))) {
 					send(linkOfMogacko, tmpChannel);
 				} else if (text.some((x) => blogName.includes(x))) {
-					send(blogLinks, tmpChannel);
+					if (text.some((x) => names.includes(x))) {
+						for (let i = 0; i < names.length; i++) {
+							console.log(names[i]);
+							if (text.includes(names[i])) {
+								text = names[i];
+								break;
+							}
+						}
+						send([`${text} 블로그는 ${blogLinks[text]} 여기야`], tmpChannel);
+					} else {
+						send([blogLinks.all], tmpChannel);
+					}
 				} else if (text.some((x) => story.includes(x))) {
 					send(storyList, tmpChannel);
 				} else if (text.some((x) => call.includes(x))) {
