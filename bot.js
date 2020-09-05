@@ -17,6 +17,7 @@ const {
 	teamChannel,
 	teamMember,
 	notionUrl,
+	botName,
 } = information;
 
 // get a commands filtering what to do
@@ -36,6 +37,10 @@ const {
 	booksRecommend,
 	search,
 	call,
+	sendMessage,
+	sendGeneralChannel,
+	sendTeamChannel,
+	sendSelfChannel,
 } = command;
 
 // get a messages to send by command
@@ -67,7 +72,7 @@ const send = async (message, channel = selfChannel) => {
 	slack.api(
 		'chat.postMessage',
 		{
-			username: '서예지', // 슬랙에 표시될 봇이름
+			username: botName, // 슬랙에 표시될 봇이름
 			text: message[Math.floor(Math.random() * message.length)],
 			channel, // 메시지가 전송될 채널
 			icon_url: imageUrl,
@@ -115,9 +120,52 @@ scheduleJob('00 20 * * 1-5', () => {
 	send(['시프티 퇴근했냐구'], teamChannel);
 });
 
+// send a message that I want to send other channel that I want by botName
+const sendText = (text) => {
+	let channel;
+	for (let i = 0; i < text.length; i++) {
+		if (sendGeneralChannel.includes(text[i])) {
+			channel = generalChannel;
+			break;
+		} else if (sendTeamChannel.includes(text[i])) {
+			channel = teamChannel;
+			break;
+		} else {
+			channel = selfChannel;
+			break;
+		}
+	}
+	const newText = [];
+	const limitText = [
+		...name,
+		...sendMessage,
+		...sendTeamChannel,
+		...sendGeneralChannel,
+		...sendSelfChannel,
+		...search,
+	];
+	let searchFlag = false;
+	text.reduce((a, c) => {
+		if (search.includes(c)) {
+			send(['내가 좀 찾아봤어.'], channel);
+			searchFlag = true;
+		}
+		if (c !== '<@U019ZCZGQ1F>' && !limitText.includes(c)) {
+			newText.push(c);
+		}
+	}, '');
+	if (searchFlag) {
+		setTimeout(() => sendSearchResult(newText, channel), 1000);
+	} else {
+		setTimeout(() => send([newText.join(' ')], channel), 1000);
+	}
+};
+
 // send result url in search engine
 const sendSearchResult = (textArr, channel) => {
-	const tmpArr = textArr.filter((x) => x !== '검색!');
+	const tmpArr = textArr.filter(
+		(x) => !search.includes(x) && !sendMessage.includes(x)
+	);
 	let searchEngine;
 	if (tmpArr[0] === '네이버') {
 		searchEngine = tmpArr.shift();
@@ -222,6 +270,11 @@ rtm.on('message', (message) => {
 					send(storyList, tmpChannel);
 				} else if (text.some((x) => call.includes(x))) {
 					send([teamMember.join(' ')], tmpChannel);
+				} else if (
+					tmpChannel === selfChannel &&
+					text.some((x) => sendMessage.includes(x))
+				) {
+					sendText(text);
 				} else if (text.some((x) => x === '현재시각')) {
 					time = new Date();
 					send([String(time)], tmpChannel);
