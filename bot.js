@@ -41,6 +41,7 @@ const {
 	sendGeneralChannel,
 	sendTeamChannel,
 	sendSelfChannel,
+	test,
 } = command;
 
 // get a messages to send by command
@@ -56,6 +57,7 @@ const {
 	bookList,
 	storyList,
 	branch,
+	runTest,
 } = contents;
 
 // get a function and class
@@ -286,6 +288,8 @@ rtm.on('message', (message) => {
 					text.some((x) => sendMessage.includes(x))
 				) {
 					sendText(text);
+				} else if (text.some((x) => test.includes(x))) {
+					send(runTest, tmpChannel);
 				} else if (text.some((x) => x === '현재시각')) {
 					time = new Date();
 					send([String(time)], tmpChannel);
