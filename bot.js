@@ -260,8 +260,8 @@ rtm.on('message', (message) => {
 					send(help, tmpChannel);
 				} else if (text.some((x) => branchList.includes(x))) {
 					send(branch, tmpChannel);
-				} else if (text.some((x) => roleList.includes(x))) {
-					send([getRoles('result')], tmpChannel);
+					// } else if (text.some((x) => roleList.includes(x))) {
+					// 	send([getRoles('result')], tmpChannel);
 				} else if (text.some((x) => hi.includes(x))) {
 					send(greetingText, tmpChannel);
 				} else if (text.some((x) => lunch.includes(x))) {
