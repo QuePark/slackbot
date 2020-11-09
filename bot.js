@@ -42,6 +42,8 @@ const {
 	sendTeamChannel,
 	sendSelfChannel,
 	test,
+	server,
+	client,
 } = command;
 
 // get a messages to send by command
@@ -58,6 +60,8 @@ const {
 	storyList,
 	branch,
 	runTest,
+	serverOfGithub,
+	clientOfGithub,
 } = contents;
 
 // get a function and class
@@ -81,7 +85,7 @@ const send = async (message, channel = selfChannel) => {
 		},
 		function (err, response) {
 			// console.log(response);
-		}
+		},
 	);
 };
 
@@ -98,10 +102,10 @@ scheduleJob('00 50 08 * * 1-5', () => {
 	send(greetingText, teamChannel);
 });
 scheduleJob('02 50 08 * * 1-5', () => {
-	send(['시프티 출근했어?'], teamChannel);
+	send(['시프티 출근했습니까?'], teamChannel);
 });
 scheduleJob('00 09 * * 1-5', () => {
-	send(['시프티 출근했냐구'], teamChannel);
+	send(['시프티 출근하셨냐구요'], teamChannel);
 });
 scheduleJob('55 11 * * 1-5', () => {
 	send(lunchText, generalChannel);
@@ -116,10 +120,10 @@ scheduleJob('10 18 * * 1-5', () => {
 	send(dinnerText, generalChannel);
 });
 scheduleJob('00 18 * * 1-5', () => {
-	send(['시프티 퇴근했어?'], teamChannel);
+	send(['시프티 하셨습니까?'], teamChannel);
 });
 scheduleJob('00 20 * * 1-5', () => {
-	send(['시프티 퇴근했냐구'], teamChannel);
+	send(['시프티 퇴근하셨냐구요'], teamChannel);
 });
 
 // send a message that I want to send other channel that I want by botName
@@ -166,14 +170,14 @@ const sendText = (text) => {
 // send result url in search engine
 const sendSearchResult = (textArr, channel) => {
 	const tmpArr = textArr.filter(
-		(x) => !search.includes(x) && !sendMessage.includes(x)
+		(x) => !search.includes(x) && !sendMessage.includes(x),
 	);
 	let searchEngine;
 	if (tmpArr[0] === '네이버') {
 		searchEngine = tmpArr.shift();
 		const naver = [
 			`https://search.naver.com/search.naver?ie=UTF-8&query=${tmpArr.join(
-				'+'
+				'+',
 			)}&sm=chr_hty`,
 		];
 		send(naver, channel);
@@ -205,7 +209,7 @@ const rtm = new RTMClient(token);
 rtm.start();
 
 rtm.on('message', (message) => {
-	// console.log('---------------------------message: ', message);
+	console.log('---------------------------message: ', message);
 	if (!message.hidden) {
 		let text = message.text;
 		if (
@@ -220,7 +224,7 @@ rtm.on('message', (message) => {
 				send([notionUrl], message.channel);
 			}
 			if (text.split(' ').includes('<@U019ZCZGQ1F>')) {
-				send(['바쁘니까 호출하지마'], message.channel);
+				send(['바쁘니까 호출하지마시죠'], message.channel);
 			}
 		}
 		if (
@@ -229,7 +233,7 @@ rtm.on('message', (message) => {
 		) {
 			text = text.split(' ');
 			if (text.some((x) => hi.includes(x))) {
-				send(['말 시키지마 대사 못외웠어'], generalChannel);
+				send(['부르지 말아주세요. 아직 남이니까.'], generalChannel);
 			} else if (text.some((x) => booksRecommend.includes(x))) {
 				send(bookList, generalChannel);
 			} else if (text.some((x) => mogacko.includes(x))) {
@@ -288,6 +292,10 @@ rtm.on('message', (message) => {
 					text.some((x) => sendMessage.includes(x))
 				) {
 					sendText(text);
+				} else if (text.some((x) => server.includes(x))) {
+					send(serverOfGithub, tmpChannel);
+				} else if (text.some((x) => client.includes(x))) {
+					send(clientOfGithub, tmpChannel);
 				} else if (text.some((x) => test.includes(x))) {
 					send(runTest, tmpChannel);
 				} else if (text.some((x) => x === '현재시각')) {
